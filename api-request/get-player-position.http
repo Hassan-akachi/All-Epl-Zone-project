@@ -1,0 +1,6 @@
+### GET request to example server
+### Get players by position
+GET http://localhost:8080/api/v1/players?position=FW
+
+
+###

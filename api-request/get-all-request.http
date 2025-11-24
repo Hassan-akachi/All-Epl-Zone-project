@@ -1,0 +1,70 @@
+### Base URL
+@baseUrl = http://localhost:8080
+@contentType = application/json
+
+### 1. Get all players
+GET {{baseUrl}}/api/v1/players
+Accept: application/json
+
+###
+
+### 2. Get all players with team filter
+GET {{baseUrl}}/api/v1/players?team=Arsenal
+Accept: application/json
+
+###
+
+### 3. Get all players with position filter
+GET {{baseUrl}}/api/v1/players?position=FW
+Accept: application/json
+
+###
+
+### 4. Get all players with nation filter
+GET {{baseUrl}}/api/v1/players?nation=eng ENG
+Accept: application/json
+
+###
+
+
+### 4. Get all players with nation filter
+GET {{baseUrl}}/api/v1/players?nation=eng ENG
+Accept: application/json
+
+###
+
+### 5. Get players by team and position
+GET {{baseUrl}}/api/v1/players?team=Manchester-City&position=MF
+Accept: application/json
+
+###
+
+### 6. Get player by name
+GET {{baseUrl}}/api/v1/players?name=Bukayo Saka
+Accept: application/json
+
+###
+
+### 7. Get player by ID (replace with actual UUID)
+GET {{baseUrl}}/api/v1/players/550e8400-e29b-41d4-a716-446655440000
+Accept: application/json
+
+###
+
+### 8. Advanced search
+GET {{baseUrl}}/api/v1/players/search?team=Arsenal&position=MF&nation=NOR
+Accept: application/json
+
+###
+
+### 9. Get top scorers
+GET {{baseUrl}}/api/v1/players/top-scorers
+Accept: application/json
+
+###
+
+### 10. Get team top scorers
+GET {{baseUrl}}/api/v1/players/teams/Arsenal/top-scorers
+Accept: application/json
+
+###

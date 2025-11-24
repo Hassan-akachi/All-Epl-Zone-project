@@ -1,0 +1,24 @@
+### Update player
+PUT http://localhost:8080/api/v1/players/98ce7013-799e-4f31-9a94-5bb4d165e2b1
+Content-Type: application/json
+#Content-Type: {{contentType}}
+
+{
+ "player": "Declan Rice",
+    "nation": "eng ENG",
+    "pos": "MF",
+    "age": 23,
+    "mp": 15,
+    "starts": 15,
+    "min": 1350.00,
+    "gls": 1.00,
+    "ast": 1.00,
+    "pk": 0.00,
+    "crdy": 2.00,
+    "crdr": 0.00,
+    "xg": 1.40,
+    "xag": 1.80,
+    "team": "Arsenal"
+}
+
+###

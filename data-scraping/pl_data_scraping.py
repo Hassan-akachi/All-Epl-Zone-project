@@ -9,7 +9,21 @@ all_teams = [] ## list to store all teams
 html = requests.get('https://fbref.com/en/comps/9/Premier-League-Stats').text ##getting the html from the website
 # soup = BeautifulSoup(html, 'lxml')
 soup = BeautifulSoup(html, 'html.parser')
-table = soup.find_all('table', class_ = 'stats_table')[0] ##only want the first table, therefore the first index
+# table = soup.find_all('table', class_ = 'stats_table')[0] ##only want the first table, therefore the first index
+
+# Find all tables with class 'stats_table'
+tables = soup.find_all('table', class_='stats_table')
+
+# Check if any tables were found before accessing index [0]
+if tables:
+    table = tables[0]  # Only want the first table
+    # Continue with your processing...
+else:
+    print("No tables with class 'stats_table' found on the page.")
+    print("Available tables:", len(soup.find_all('table')))
+    # Print all table classes for debugging
+    for i, tbl in enumerate(soup.find_all('table')):
+        print(f"Table {i} classes:", tbl.get('class'))
 
 links = table.find_all('a') ## finding all links in the table
 links = [l.get("href") for l in links] ##parsing through links

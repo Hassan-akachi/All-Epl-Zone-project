@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Epl-project.iml" filepath="$PROJECT_DIR$/Epl-project.iml" />
       <module fileurl="file://$PROJECT_DIR$/data-scraping/data-scraping.iml" filepath="$PROJECT_DIR$/data-scraping/data-scraping.iml" />
+      <module fileurl="file://$PROJECT_DIR$/epl_zone_mobile/epl_zone_mobile.iml" filepath="$PROJECT_DIR$/epl_zone_mobile/epl_zone_mobile.iml" />
     </modules>
   </component>
 </project>
