@@ -1,0 +1,8 @@
+### Profile Request (Authenticated)
+GET http://localhost:4000/profile
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6W10sImlhdCI6MTc2NDUxMjc4MSwiZXhwIjoxNzY0OTEyNzgxLCJzdWIiOiJ0ZXN0MkBnbWFpbC5jb20ifQ.sUgCUNt-K7f5KRVckSq5UGzWDJmt3OGjEdrdLXMIO3I
+
+//{
+//  "message": "Optional data if the POST request requires a body"
+//}

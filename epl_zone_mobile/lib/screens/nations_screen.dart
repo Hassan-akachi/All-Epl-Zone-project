@@ -2,8 +2,11 @@
 import 'package:flutter/material.dart';
 import '../widgets/image_display.dart';
 import '../widgets/search_bar_widget.dart';
-import '../widgets/team_card.dart'; // We'll create a similar card for nations
+import '../widgets/team_card.dart';
+import 'nation_players_screen.dart'; // We'll create a similar card for nations
 
+/// Nations Screen - Displays top EPL nationalities
+/// When a nation is clicked, navigates to NationPlayersScreen
 class NationsScreen extends StatefulWidget {
   const NationsScreen({Key? key}) : super(key: key);
 
@@ -14,7 +17,7 @@ class NationsScreen extends StatefulWidget {
 class _NationsScreenState extends State<NationsScreen> {
   String _searchQuery = '';
 
-  // Top 10 EPL nationalities including Nigeria
+  // Top EPL nationalities with flag assets and colors
   final List<Map<String, dynamic>> nations = [
     {
       'code': 'gb-eng',
@@ -98,15 +101,18 @@ class _NationsScreenState extends State<NationsScreen> {
     },
   ];
 
+  /// Filters nations based on search query
   List<Map<String, dynamic>> get filteredNations {
     if (_searchQuery.isEmpty) return nations;
     return nations.where((nation) {
-      return nation['name'].toString().toLowerCase().contains(
-        _searchQuery.toLowerCase(),
-      ) ||
-          nation['code'].toString().toLowerCase().contains(
-            _searchQuery.toLowerCase(),
-          );
+      return nation['name']
+          .toString()
+          .toLowerCase()
+          .contains(_searchQuery.toLowerCase()) ||
+          nation['code']
+              .toString()
+              .toLowerCase()
+              .contains(_searchQuery.toLowerCase());
     }).toList();
   }
 
@@ -121,12 +127,16 @@ class _NationsScreenState extends State<NationsScreen> {
           children: [
             Text('Nations', style: Theme.of(context).textTheme.displayLarge),
             const SizedBox(height: 24),
+
+            // Search bar
             SearchBarWidget(
               placeholder: 'Search for countries',
               value: _searchQuery,
               onChanged: (value) => setState(() => _searchQuery = value),
             ),
             const SizedBox(height: 32),
+
+            // Nations grid
             GridView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
@@ -143,7 +153,22 @@ class _NationsScreenState extends State<NationsScreen> {
               itemCount: filteredNations.length,
               itemBuilder: (context, index) {
                 final nation = filteredNations[index];
-                return _NationCard(nation: nation);
+                return _NationCard(
+                  nation: nation,
+                  // Navigate to nation players screen when tapped
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => NationPlayersScreen(
+                          nationCode: nation['code'] as String,
+                          nationName: nation['name'] as String,
+                          flagAsset: nation['flag'] as String?,
+                        ),
+                      ),
+                    );
+                  },
+                );
               },
             ),
           ],
@@ -153,10 +178,15 @@ class _NationsScreenState extends State<NationsScreen> {
   }
 }
 
+/// Nation card widget with flag and gradient
 class _NationCard extends StatelessWidget {
   final Map<String, dynamic> nation;
+  final VoidCallback onTap;
 
-  const _NationCard({required this.nation});
+  const _NationCard({
+    required this.nation,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -164,15 +194,7 @@ class _NationCard extends StatelessWidget {
       elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: InkWell(
-        onTap: () {
-          // Navigate to nation details
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('${nation['name']} selected'),
-              duration: const Duration(seconds: 1),
-            ),
-          );
-        },
+        onTap: onTap,
         child: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -207,7 +229,7 @@ class _NationCard extends StatelessWidget {
                   padding: const EdgeInsets.all(16.0),
                   child: ImageDisplay(
                     imageUrl: nation['flag'] as String,
-                    isSvg: true, // All flags are SVG
+                    isSvg: true,
                     width: 70,
                     height: 70,
                   ),

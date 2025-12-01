@@ -1,8 +1,11 @@
 // lib/screens/positions_screen.dart
+import 'package:epl_zone/screens/position_player_screen.dart';
 import 'package:flutter/material.dart';
 import '../widgets/search_bar_widget.dart';
 import '../widgets/image_display.dart';
 
+/// Positions Screen - Displays all player positions
+/// When a position is clicked, navigates to PositionPlayersScreen
 class PositionsScreen extends StatefulWidget {
   const PositionsScreen({Key? key}) : super(key: key);
 
@@ -11,8 +14,7 @@ class PositionsScreen extends StatefulWidget {
 }
 
 class _PositionsScreenState extends State<PositionsScreen> {
-  String _searchQuery = '';
-
+  // Position data with images and gradients
   final List<Map<String, dynamic>> positions = [
     {
       'code': 'GK',
@@ -40,20 +42,6 @@ class _PositionsScreenState extends State<PositionsScreen> {
     },
   ];
 
-  List<Map<String, dynamic>> get filteredPositions {
-    if (_searchQuery.isEmpty) return positions;
-    return positions.where((position) {
-      return position['name']
-          .toString()
-          .toLowerCase()
-          .contains(_searchQuery.toLowerCase()) ||
-          position['code']
-              .toString()
-              .toLowerCase()
-              .contains(_searchQuery.toLowerCase());
-    }).toList();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,6 +59,7 @@ class _PositionsScreenState extends State<PositionsScreen> {
             ),
             const SizedBox(height: 24),
 
+            // Positions grid
             GridView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
@@ -84,10 +73,24 @@ class _PositionsScreenState extends State<PositionsScreen> {
                 crossAxisSpacing: 24,
                 childAspectRatio: 0.9,
               ),
-              itemCount: filteredPositions.length,
+              itemCount: positions.length,
               itemBuilder: (context, index) {
-                final position = filteredPositions[index];
-                return _PositionCard(position: position);
+                final position = positions[index];
+                return _PositionCard(
+                  position: position,
+                  // Navigate to position players screen when tapped
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PositionPlayersScreen(
+                          positionCode: position['code'] as String,
+                          positionName: position['name'] as String,
+                        ),
+                      ),
+                    );
+                  },
+                );
               },
             ),
           ],
@@ -97,11 +100,15 @@ class _PositionsScreenState extends State<PositionsScreen> {
   }
 }
 
-// Alternative _PositionCard with background images
+/// Position card widget with background image
 class _PositionCard extends StatelessWidget {
   final Map<String, dynamic> position;
+  final VoidCallback onTap;
 
-  const _PositionCard({required this.position});
+  const _PositionCard({
+    required this.position,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -109,14 +116,7 @@ class _PositionCard extends StatelessWidget {
       elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: InkWell(
-        onTap: () {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('${position['name']} selected'),
-              duration: const Duration(seconds: 1),
-            ),
-          );
-        },
+        onTap: onTap,
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
@@ -145,7 +145,8 @@ class _PositionCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  padding:
+                  const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   decoration: BoxDecoration(
                     color: Colors.black.withOpacity(0.6),
                     borderRadius: BorderRadius.circular(20),

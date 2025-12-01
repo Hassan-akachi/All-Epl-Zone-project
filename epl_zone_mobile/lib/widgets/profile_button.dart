@@ -1,5 +1,6 @@
-import 'package:epl_zone/core/util/constant.dart';
 import 'package:flutter/material.dart';
+
+import '../util/constant.dart';
 
 class ProfileButton extends StatelessWidget {
   const ProfileButton({Key? key}) : super(key: key);

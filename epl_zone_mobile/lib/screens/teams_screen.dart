@@ -1,9 +1,13 @@
 // lib/screens/teams_screen.dart
+import 'package:epl_zone/screens/team_players_screen.dart';
 import 'package:flutter/material.dart';
-import '../core/util/constant.dart';
+import '../util/constant.dart';
+import '../util/team_constant.dart';
 import '../widgets/search_bar_widget.dart';
 import '../widgets/team_card.dart';
 
+/// Teams Screen - Displays all Premier League teams
+/// When a team is clicked, navigates to TeamPlayersScreen
 class TeamsScreen extends StatefulWidget {
   const TeamsScreen({Key? key}) : super(key: key);
 
@@ -14,17 +18,12 @@ class TeamsScreen extends StatefulWidget {
 class _TeamsScreenState extends State<TeamsScreen> {
   String _searchQuery = '';
 
-
-
-  // Helper method to check if image is SVG
-  bool _isSvgImage(String imageUrl) {
-    return imageUrl.toLowerCase().endsWith('.svg');
-  }
-
+  /// Filters teams based on search query
   List<Map<String, String>> get filteredTeams {
-    if (_searchQuery.isEmpty) return teams;
-    return teams
-        .where((team) => team['name']!.toLowerCase().contains(_searchQuery.toLowerCase()))
+    if (_searchQuery.isEmpty) return TeamConstants.teams;
+    return TeamConstants.teams
+        .where((team) =>
+        team['name']!.toLowerCase().contains(_searchQuery.toLowerCase()))
         .toList();
   }
 
@@ -44,12 +43,16 @@ class _TeamsScreenState extends State<TeamsScreen> {
               style: Theme.of(context).textTheme.displayLarge,
             ),
             const SizedBox(height: 24),
+
+            // Search bar
             SearchBarWidget(
               placeholder: 'Search for teams',
               value: _searchQuery,
               onChanged: (value) => setState(() => _searchQuery = value),
             ),
             const SizedBox(height: 32),
+
+            // Teams grid
             GridView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
@@ -68,19 +71,19 @@ class _TeamsScreenState extends State<TeamsScreen> {
                 final team = filteredTeams[index];
                 final teamId = team['id']!;
                 final teamName = team['name']!;
-                final imageUrl = getImageUrl(teamId);
-                final isSvg = _isSvgImage(imageUrl);
+                final imageUrl = TeamConstants.getImageUrl(teamId);
+                final isSvg = TeamConstants.isSvgImage(imageUrl);
 
                 return TeamCard(
                   teamName: teamName,
                   imageUrl: imageUrl,
                   isSvg: isSvg,
                   onTap: () {
-                    // Navigate to team details or show snackbar
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('$teamName selected'),
-                        duration: const Duration(seconds: 1),
+                    // Navigate to team players screen
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => TeamPlayersScreen(teamId: teamId),
                       ),
                     );
                   },

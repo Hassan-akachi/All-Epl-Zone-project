@@ -1,7 +1,7 @@
 // lib/screens/home_screen.dart
-import 'package:epl_zone/core/util/constant.dart';
 import 'package:flutter/material.dart';
-import '../core/theme/app_theme.dart';
+import '../theme/app_theme.dart';
+import '../util/constant.dart';
 import '../widgets/feature_card.dart';
 
 class HomeScreen extends StatelessWidget {

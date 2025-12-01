@@ -1,11 +1,11 @@
 // lib/services/player_api_service.dart
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import '../models/player.dart';
-import '../models/player_filters.dart';
+import '../../../models/player.dart';
+import '../../../models/player_filters.dart';
 
 class PlayerApiService {
-  static const String baseUrl = 'http://localhost:8080/api/v1';
+  static  String playersDataBaseUrl = '${playersDataBaseUrl}api/v1';
 
   // For Android Emulator use: http://10.0.2.2:8080/api/v1
   // For iOS Simulator use: http://localhost:8080/api/v1
@@ -13,7 +13,7 @@ class PlayerApiService {
 
   Future<List<Player>> getAllPlayers([PlayerFilters? filters]) async {
     try {
-      final uri = Uri.parse('$baseUrl/players');
+      final uri = Uri.parse('$playersDataBaseUrl/players');
       final queryParams = filters?.toQueryParams() ?? {};
       final finalUri = uri.replace(queryParameters: queryParams);
 
@@ -32,7 +32,7 @@ class PlayerApiService {
 
   Future<Player> getPlayerById(String id) async {
     try {
-      final response = await http.get(Uri.parse('$baseUrl/players/$id'));
+      final response = await http.get(Uri.parse('$playersDataBaseUrl/players/$id'));
 
       if (response.statusCode == 200) {
         return Player.fromJson(json.decode(response.body));
@@ -46,7 +46,7 @@ class PlayerApiService {
 
   Future<List<Player>> searchPlayers(PlayerFilters filters) async {
     try {
-      final uri = Uri.parse('$baseUrl/players/search');
+      final uri = Uri.parse('$playersDataBaseUrl/players/search');
       final finalUri = uri.replace(queryParameters: filters.toQueryParams());
 
       final response = await http.get(finalUri);
@@ -64,7 +64,7 @@ class PlayerApiService {
 
   Future<List<Player>> getTopScorers() async {
     try {
-      final response = await http.get(Uri.parse('$baseUrl/players/top-scorers'));
+      final response = await http.get(Uri.parse('$playersDataBaseUrl/players/top-scorers'));
 
       if (response.statusCode == 200) {
         final List<dynamic> jsonList = json.decode(response.body);
@@ -80,7 +80,7 @@ class PlayerApiService {
   Future<List<Player>> getTeamTopScorers(String team) async {
     try {
       final response = await http.get(
-        Uri.parse('$baseUrl/players/teams/$team/top-scorers'),
+        Uri.parse('$playersDataBaseUrl/players/teams/$team/top-scorers'),
       );
 
       if (response.statusCode == 200) {
@@ -97,7 +97,7 @@ class PlayerApiService {
   Future<Player> createPlayer(Player player) async {
     try {
       final response = await http.post(
-        Uri.parse('$baseUrl/players'),
+        Uri.parse('$playersDataBaseUrl/players'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode(player.toJson()),
       );
@@ -115,7 +115,7 @@ class PlayerApiService {
   Future<Player> updatePlayer(String id, Player player) async {
     try {
       final response = await http.put(
-        Uri.parse('$baseUrl/players/$id'),
+        Uri.parse('$playersDataBaseUrl/players/$id'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode(player.toJson()),
       );
@@ -132,7 +132,7 @@ class PlayerApiService {
 
   Future<void> deletePlayer(String id) async {
     try {
-      final response = await http.delete(Uri.parse('$baseUrl/players/$id'));
+      final response = await http.delete(Uri.parse('$playersDataBaseUrl/players/$id'));
 
       if (response.statusCode != 204) {
         throw Exception('Failed to delete player: ${response.statusCode}');
