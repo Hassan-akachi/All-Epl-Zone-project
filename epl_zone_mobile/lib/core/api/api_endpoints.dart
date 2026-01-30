@@ -1,7 +1,7 @@
 // lib/core/network/api_endpoints.dart
 class ApiEndpoints {
-  static const String playerbaseUrl = "http://localhost:8080"; //"ip addr" to check ip of computer to test on real device
-  static const String authbaseUrl = "http://localhost:4000";
+  static const String playerbaseUrl ="http://10.56.134.17:8080";// "http://localhost:8080"; //"ip addr" to check ip of computer to test on real device
+  static const String authbaseUrl = "http://10.56.134.17:4000";//"http://localhost:4000";
 
   // Auth Endpoints
   static const String register = "/authentication/register";
